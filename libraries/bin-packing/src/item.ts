@@ -47,7 +47,8 @@ export class Item {
     public width: number,
     public height: number,
     public depth: number,
-    public weight: number = 0
+    public weight: number = 0,
+    public restrictRotation: false | { x: boolean, y: boolean, z: boolean } = false
   ) {
     this.volume = width * height * depth;
   }

@@ -2,9 +2,12 @@ dependencies:
   '@rush-temp/library': 'file:projects/library.tgz'
   '@rush-temp/viewer': 'file:projects/viewer.tgz'
   '@types/jest': 23.3.10
+  '@types/jquery': 3.3.22
+  '@types/lodash': 4.14.118
   '@types/three': 0.93.10
   clean-webpack-plugin: 1.0.0
   jest: 23.6.0
+  lodash: 4.17.11
   rimraf: 2.6.2
   three: 0.98.0
   ts-jest: 23.10.5
@@ -37,6 +40,18 @@ packages:
       tslib: 1.9.3
       tsutils: 3.5.1
     dev: false
+    peerDependencies:
+      tslint: ^5.0.0
+      typescript: '>= 2.8.1 || >= 3.2.0-dev || >= 3.3.0-dev'
+    resolution:
+      integrity: sha512-sHTwnwA9YhxcVEJkBlfKH1KLmGQGnNYPxk+09w5NnkXelYiiP8a5f351weYfxG0CUPLt1Fgkha20Y/9+jhjn/Q==
+  /@fimbul/bifrost/0.15.0/tslint@5.11.0:
+    dependencies:
+      '@fimbul/ymir': /@fimbul/ymir/0.15.0/tsutils@3.5.1
+      tslint: 5.11.0
+      tsutils: 3.5.1
+    dev: false
+    id: registry.npmjs.org/@fimbul/bifrost/0.15.0
     peerDependencies:
       tslint: ^5.0.0
       typescript: '>= 2.8.1 || >= 3.2.0-dev || >= 3.3.0-dev'
@@ -88,6 +103,26 @@ packages:
     dev: false
     resolution:
       integrity: sha512-DC8xTuW/6TYgvEg3HEXS7cu9OijFqprVDXXiOcdOKZCU/5PJNLZU37VVvmZHdtMiGOa8wAA/We+JzbdxFzQTRQ==
+  /@types/jquery/3.3.22:
+    dependencies:
+      '@types/sizzle': 2.3.2
+    dev: false
+    resolution:
+      integrity: sha512-a4JDcIhJhHYnoWCkG3xT2CZxXZeA92JeREESorg0DMQ3ZsjuKF48h7XK4l5Gl2GRa/ItGRpKMT0pyK88yRgqXQ==
+  /@types/lodash.debounce/4.0.4:
+    dependencies:
+      '@types/lodash': 4.14.118
+    dev: false
+    resolution:
+      integrity: sha512-W3oJCQXSCmOE9uIqOdrUWT08YNSXyqXed8JhxJKCe4SH40yxz5HSdtStN1ZQYkvT7S/tae8PA34Y0TO5C7Z8Ng==
+  /@types/lodash/4.14.118:
+    dev: false
+    resolution:
+      integrity: sha512-iiJbKLZbhSa6FYRip/9ZDX6HXhayXLDGY2Fqws9cOkEQ6XeKfaxB0sC541mowZJueYyMnVUmmG+al5/4fCDrgw==
+  /@types/sizzle/2.3.2:
+    dev: false
+    resolution:
+      integrity: sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
   /@types/three/0.93.10:
     dev: false
     resolution:
@@ -274,9 +309,14 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-VY4i5EKSKkofY2I+6QLTbTTN/UvEQPCo6eiwzzSaSWfpaDhOmStMCMod6wmuPciNq+XS0faCglFu2lHZpdHUtg==
+  /ajv-keywords/3.2.0:
+    dev: false
+    peerDependencies:
+      ajv: ^6.0.0
+    resolution:
+      integrity: sha1-6GuBnGAs+IIa1jdBNpjx3sAhhHo=
   /ajv-keywords/3.2.0/ajv@6.6.1:
-    dependencies:
-      ajv: 6.6.1
+    dependencies: {}
     dev: false
     id: registry.npmjs.org/ajv-keywords/3.2.0
     peerDependencies:
@@ -5679,6 +5719,18 @@ packages:
       tslint: ^5.11.0
     resolution:
       integrity: sha512-hkaittm2607vVMe8eotANGN1CimD5tor7uoY3ypg2VTtEcDB/KGWYbJOz58t8LI4cWSyWtgqYQ5F0HwKxxhlkQ==
+  /tslint-config-airbnb/5.11.1/tslint@5.11.0:
+    dependencies:
+      tslint: 5.11.0
+      tslint-consistent-codestyle: /tslint-consistent-codestyle/1.14.1/tslint@5.11.0
+      tslint-eslint-rules: /tslint-eslint-rules/5.4.0/tslint@5.11.0
+      tslint-microsoft-contrib: /tslint-microsoft-contrib/5.2.1/tslint@5.11.0
+    dev: false
+    id: registry.npmjs.org/tslint-config-airbnb/5.11.1
+    peerDependencies:
+      tslint: ^5.11.0
+    resolution:
+      integrity: sha512-hkaittm2607vVMe8eotANGN1CimD5tor7uoY3ypg2VTtEcDB/KGWYbJOz58t8LI4cWSyWtgqYQ5F0HwKxxhlkQ==
   /tslint-config-airbnb/5.11.1/tslint@5.11.0+typescript@3.2.1:
     dependencies:
       tslint: /tslint/5.11.0/typescript@3.2.1
@@ -5697,6 +5749,18 @@ packages:
       tslib: 1.9.3
       tsutils: 2.29.0
     dev: false
+    peerDependencies:
+      tslint: ^5.0.0
+      typescript: '>=2.1.4 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >=3.1.0-dev || >=3.2.0-dev || >=3.3.0-dev'
+    resolution:
+      integrity: sha512-UxGRX2fF5LpZtqYpuPFaIva+2D7ASX3pTVw41yis6Hmw7PPA3cBnFEX1jqRsnyxGrca6mHxz7xDnwCHtOjWJMQ==
+  /tslint-consistent-codestyle/1.14.1/tslint@5.11.0:
+    dependencies:
+      '@fimbul/bifrost': /@fimbul/bifrost/0.15.0/tslint@5.11.0
+      tslint: 5.11.0
+      tsutils: 2.29.0
+    dev: false
+    id: registry.npmjs.org/tslint-consistent-codestyle/1.14.1
     peerDependencies:
       tslint: ^5.0.0
       typescript: '>=2.1.4 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >=3.1.0-dev || >=3.2.0-dev || >=3.3.0-dev'
@@ -5727,6 +5791,17 @@ packages:
       typescript: ^2.2.0 || ^3.0.0
     resolution:
       integrity: sha512-WlSXE+J2vY/VPgIcqQuijMQiel+UtmXS+4nvK4ZzlDiqBfXse8FAvkNnTcYhnQyOTW5KFM+uRRGXxYhFpuBc6w==
+  /tslint-eslint-rules/5.4.0/tslint@5.11.0:
+    dependencies:
+      tslint: 5.11.0
+      tsutils: 3.5.1
+    dev: false
+    id: registry.npmjs.org/tslint-eslint-rules/5.4.0
+    peerDependencies:
+      tslint: ^5.0.0
+      typescript: ^2.2.0 || ^3.0.0
+    resolution:
+      integrity: sha512-WlSXE+J2vY/VPgIcqQuijMQiel+UtmXS+4nvK4ZzlDiqBfXse8FAvkNnTcYhnQyOTW5KFM+uRRGXxYhFpuBc6w==
   /tslint-eslint-rules/5.4.0/tslint@5.11.0+typescript@3.2.1:
     dependencies:
       doctrine: 0.7.2
@@ -5745,6 +5820,17 @@ packages:
     dependencies:
       tsutils: 2.28.0
     dev: false
+    peerDependencies:
+      tslint: ^5.1.0
+      typescript: ^2.1.0 || ^3.0.0
+    resolution:
+      integrity: sha512-PDYjvpo0gN9IfMULwKk0KpVOPMhU6cNoT9VwCOLeDl/QS8v8W2yspRpFFuUS7/c5EIH/n8ApMi8TxJAz1tfFUA==
+  /tslint-microsoft-contrib/5.2.1/tslint@5.11.0:
+    dependencies:
+      tslint: 5.11.0
+      tsutils: 2.28.0
+    dev: false
+    id: registry.npmjs.org/tslint-microsoft-contrib/5.2.1
     peerDependencies:
       tslint: ^5.1.0
       typescript: ^2.1.0 || ^3.0.0
@@ -5942,6 +6028,17 @@ packages:
     dev: false
     engines:
       node: '>= 4.8 < 5.0.0 || >= 5.10'
+    peerDependencies:
+      webpack: ^2.0.0 || ^3.0.0 || ^4.0.0
+    resolution:
+      integrity: sha512-ovHIch0AMlxjD/97j9AYovZxG5wnHOPkL7T1GKochBADp/Zwc44pEWNqpKl1Loupp1WhFg7SlYmHZRUfdAacgw==
+  /uglifyjs-webpack-plugin/1.3.0/webpack@4.16.5:
+    dependencies:
+      webpack: /webpack/4.16.5/webpack@4.16.5
+    dev: false
+    engines:
+      node: '>= 4.8 < 5.0.0 || >= 5.10'
+    id: registry.npmjs.org/uglifyjs-webpack-plugin/1.3.0
     peerDependencies:
       webpack: ^2.0.0 || ^3.0.0 || ^4.0.0
     resolution:
@@ -6165,7 +6262,7 @@ packages:
       loader-utils: 1.1.0
       supports-color: 5.5.0
       v8-compile-cache: 2.0.2
-      webpack: 4.16.5
+      webpack: /webpack/4.16.5/webpack@4.16.5
       yargs: 12.0.5
     dev: false
     engines:
@@ -6200,7 +6297,7 @@ packages:
       path-is-absolute: 1.0.1
       range-parser: 1.2.0
       url-join: 4.0.0
-      webpack: 4.16.5
+      webpack: /webpack/4.16.5/webpack@4.16.5
       webpack-log: 1.2.0
     dev: false
     engines:
@@ -6275,7 +6372,7 @@ packages:
       spdy: 3.4.7
       strip-ansi: 3.0.1
       supports-color: 5.5.0
-      webpack: 4.16.5
+      webpack: /webpack/4.16.5/webpack@4.16.5
       webpack-dev-middleware: /webpack-dev-middleware/3.1.3/webpack@4.16.5
       webpack-log: 1.2.0
       yargs: 11.0.0
@@ -6337,6 +6434,17 @@ packages:
     engines:
       node: '>=6.11.5'
     hasBin: true
+    resolution:
+      integrity: sha512-i5cHYHonzSc1zBuwB5MSzW4v9cScZFbprkHK8ZgzPDCRkQXGGpYzPmJhbus5bOrZ0tXTcQp+xyImRSvKb0b+Kw==
+  /webpack/4.16.5/webpack@4.16.5:
+    dependencies:
+      ajv-keywords: 3.2.0
+      uglifyjs-webpack-plugin: /uglifyjs-webpack-plugin/1.3.0/webpack@4.16.5
+    dev: false
+    engines:
+      node: '>=6.11.5'
+    hasBin: true
+    id: registry.npmjs.org/webpack/4.16.5
     resolution:
       integrity: sha512-i5cHYHonzSc1zBuwB5MSzW4v9cScZFbprkHK8ZgzPDCRkQXGGpYzPmJhbus5bOrZ0tXTcQp+xyImRSvKb0b+Kw==
   /websocket-driver/0.7.0:
@@ -6533,13 +6641,13 @@ packages:
       '@types/jest': 23.3.10
       jest: 23.6.0
       rimraf: 2.6.2
-      ts-jest: /ts-jest/23.10.5/jest@23.6.0
-      tslint: /tslint/5.11.0/typescript@3.2.1
-      tslint-config-airbnb: /tslint-config-airbnb/5.11.1/tslint@5.11.0+typescript@3.2.1
+      ts-jest: 23.10.5
+      tslint: 5.11.0
+      tslint-config-airbnb: /tslint-config-airbnb/5.11.1/tslint@5.11.0
       typescript: 3.2.1
       webpack: 4.16.5
-      webpack-cli: /webpack-cli/3.1.0/webpack@4.16.5
-      webpack-dev-server: /webpack-dev-server/3.1.5/webpack@4.16.5
+      webpack-cli: 3.1.0
+      webpack-dev-server: 3.1.5
     dev: false
     name: '@rush-temp/library'
     resolution:
@@ -6549,9 +6657,14 @@ packages:
   'file:projects/viewer.tgz':
     dependencies:
       '@types/jest': 23.3.10
+      '@types/jquery': 3.3.22
+      '@types/lodash': 4.14.118
+      '@types/lodash.debounce': 4.0.4
       '@types/three': 0.93.10
       clean-webpack-plugin: 1.0.0
       jest: 23.6.0
+      lodash: 4.17.11
+      lodash.debounce: 4.0.8
       rimraf: 2.6.2
       three: 0.98.0
       ts-jest: /ts-jest/23.10.5/jest@23.6.0
@@ -6559,13 +6672,13 @@ packages:
       tslint: /tslint/5.11.0/typescript@3.2.1
       tslint-config-airbnb: /tslint-config-airbnb/5.11.1/tslint@5.11.0+typescript@3.2.1
       typescript: 3.2.1
-      webpack: 4.16.5
+      webpack: /webpack/4.16.5/webpack@4.16.5
       webpack-cli: /webpack-cli/3.1.0/webpack@4.16.5
       webpack-dev-server: /webpack-dev-server/3.1.5/webpack@4.16.5
     dev: false
     name: '@rush-temp/viewer'
     resolution:
-      integrity: sha512-xkzBL580IBxu9gMYYquYvbgBCYBrcFrRoHteArSK+WYiKZWnopKpz4n2Nuu2QkmqaUiB7ORwhymhVnR//Shwlw==
+      integrity: sha512-P3QroXOzjCydPAy9aiG7zM7lapwxkAOZ+lwn+XIzq7IO4vNpmJNmOQTVaGb2WT7oSqxzi5w0vNAAh+iUNSOGzw==
       tarball: 'file:projects/viewer.tgz'
     version: 0.0.0
 registry: 'https://registry.npmjs.org/'
@@ -6575,9 +6688,12 @@ specifiers:
   '@rush-temp/library': 'file:./projects/library.tgz'
   '@rush-temp/viewer': 'file:./projects/viewer.tgz'
   '@types/jest': ^23.3.10
+  '@types/jquery': ^3.3.22
+  '@types/lodash': ^4.14.118
   '@types/three': ^0.93.10
   clean-webpack-plugin: ^1.0.0
   jest: ^23.6.0
+  lodash: ^4.17.11
   rimraf: ^2.6.2
   three: ^0.98.0
   ts-jest: ^23.10.5

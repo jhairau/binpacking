@@ -9,23 +9,63 @@ import {
 } from './models';
 
 interface PackerOptions {
+
+  /**
+   * This might be a legacy feature
+   */
   removeEmptyBins?: boolean;
-  optimiseBoxes?: boolean;
-  restrictRotation?: false | { x: boolean, y: boolean, z: boolean }
+
+  /**
+   * By default the algorithm will try to pack the smallest fitting box available.
+   * If you set this to true, we will attempt to reduce the amount of availableBins by starting
+   * with the smallest bin that fits the entire items, if we cannot find a bin that fits
+   * all of the items then the largest bin is used
+   */
+  optimiseBins?: boolean;
+
+  /**
+   * Are the bins provied unlimted in how many times they can be reused?
+   */
+  binsAreUnlimted: boolean;
+
+  /**
+   * Restrict rotation capabilities. You would do this at the packing level to make
+   * physically packing the availableBins faster for the packing person.
+   *
+   * You can also restrict rotation on the Item level, where you may not want something on its side
+   */
+  restrictRotation?: false | { x: boolean, y: boolean, z: boolean };
+
+  /**
+   * Allow the user to specify custom intial sorting of items
+   * This is handy if you have a physical picking line that is not sorted by volume
+   * @param itemA
+   * @param itemB
+   */
+  customItemSorting?: (itemA: Item, itemB: Item) => number;
 }
 
 const defaultPackerOptions: PackerOptions = {
   removeEmptyBins: false,
-  optimiseBoxes: false,
-  restrictRotation: false
+  optimiseBins: false,
+  restrictRotation: false,
+  binsAreUnlimted: true
 };
 
 export class Packer {
-  bins: Bin[] = [];
+  usedBins: Bin[] = [];
+  availableBins: Bin[] = [];
   items: Item[] = [];
   unfitItems: Item[] = [];
 
   options: PackerOptions;
+
+  defaultItemSorting = (a: Item, b: Item) => {
+    if (a.volume === b.volume) {
+      return 0;
+    }
+    return a.volume > b.volume ? -1 : 1;
+  };
 
   constructor(options?: PackerOptions) {
     this.options = {
@@ -35,7 +75,7 @@ export class Packer {
   }
 
   addBin(bin: Bin) {
-    this.bins.push(bin);
+    this.availableBins.push(bin);
   }
 
   addItem(item: Item) {
@@ -43,8 +83,8 @@ export class Packer {
   }
 
   findFittedBin(item: Item): Bin | null {
-    for (let i = 0; i < this.bins.length; i++) {
-      const bin = this.bins[ i ];
+    for (let i = 0; i < this.availableBins.length; i++) {
+      const bin = this.availableBins[ i ];
 
       // Check if item can fit in bin
       if (!bin.weighItem(item) || !bin.putItem(item, StartPosition)) {
@@ -62,8 +102,8 @@ export class Packer {
 
   getBiggerBinThan(bin: Bin): Bin | null {
     const volume = bin.volume;
-    for (let i = 0; i < this.bins.length; i++) {
-      const bin2 = this.bins[ i ];
+    for (let i = 0; i < this.availableBins.length; i++) {
+      const bin2 = this.availableBins[ i ];
       if (bin2.volume > volume) {
         return bin2;
       }
@@ -169,10 +209,10 @@ export class Packer {
   }
 
   /**
-   * Sort bins smallest to largest
+   * Sort availableBins smallest to largest
    */
-  sortBins() {
-    this.bins.sort((a: Bin, b: Bin) => {
+  sortAvailableBins() {
+    this.availableBins.sort((a: Bin, b: Bin) => {
       if (a.volume === b.volume) {
         return 0;
       }
@@ -184,37 +224,126 @@ export class Packer {
    * sort items largest to smalles
    */
   sortItems() {
-    this.items.sort((a: Item, b: Item) => {
-      if (a.volume === b.volume) {
-        return 0;
+    const sortMethod = this.options.customItemSorting
+      ? this.options.customItemSorting
+      : this.defaultItemSorting;
+
+    this.items.sort(sortMethod);
+  }
+
+  findOptimumBin(): Bin | null {
+    const itemsTotals = this.items.reduce(
+      (agg, item: Item) => (
+        {
+          volume: agg.volume + item.volume,
+          weight: agg.weight + item.weight || 0
+        }
+      ),
+      {
+        volume: 0,
+        weight: 0
       }
-      return a.volume > b.volume ? -1 : 1;
-    });
+    );
+
+    const length = this.availableBins.length;
+    let optimumBin: Bin | null = null;
+
+    for (let i = 0; i < length; i++) {
+      const bin = this.availableBins[ i ];
+
+      if (
+        bin.volume < itemsTotals.volume || // items have too much volume
+        (
+          bin.maxWeight && bin.maxWeight < itemsTotals.weight
+        ) // factoring weight and its too heavy
+      ) {
+        continue;
+      }
+
+      optimumBin = bin; // we have our bin, time to exit the loop
+      break;
+    }
+
+    return optimumBin;
+  }
+
+  cloneBin(bin: Bin): Bin {
+    return new Bin(bin.name, bin.width, bin.height, bin.depth, bin.maxWeight);
   }
 
   /**
-   * Pack the bins with the items
+   * Pack the availableBins with the items
    */
   pack(): void {
-    this.sortBins();
+    this.sortAvailableBins();
     this.sortItems();
 
     while (this.items.length > 0) {
-      const bin = this.findFittedBin(this.items[ 0 ]);
+      let availableBin: Bin | null = null;
 
-      // Biggest item cannot fit in biggest bin, exit
-      if (bin === null) {
+      if (this.options.optimiseBins) {
+        const optimumBin = this.findOptimumBin();
+        availableBin = optimumBin ? optimumBin : this.availableBins[ this.availableBins.length - 1 ];
+      } else {
+        availableBin = this.findFittedBin(this.items[ 0 ]);
+      }
+
+      // Biggest item cannot fit in biggest availableBin, exit
+      if (availableBin === null) {
         this.unfitItem();
         continue;
+      }
+
+      let bin: Bin = availableBin;
+
+      if (this.options.binsAreUnlimted) {
+        bin = this.cloneBin(availableBin);
+        // Add the avaible bin to our used bins
+        this.usedBins.push(bin);
       }
 
       // Reduces this.items each time a bin is packed
       this.items = this.packToBin(bin, this.items);
     }
 
-    if (this.options.removeEmptyBins) {
-      this.bins = this.bins.filter((bin: Bin) => bin.items.length !== 0);
+    if (!this.options.binsAreUnlimted) {
+      this.usedBins = this.availableBins;
     }
 
+    // if (this.options.removeEmptyBins) {
+    //   this.availableBins = this.availableBins.filter((bin: Bin) => bin.items.length !== 0);
+    // }
+
+  }
+
+  stats() {
+    const bins = this.usedBins.reduce(
+      (agg: any[], bin) => {
+        const totalItemsVolume = bin.items.reduce((agg, item) => agg + item.volume, 0);
+        const totalItemsWeight = bin.items.reduce((agg, item) => agg + item.weight, 0);
+
+        const result = {
+          volume: bin.volume,
+          usedVolume: totalItemsVolume,
+          unusedVolume: bin.volume - totalItemsVolume,
+          usedVolumePercent: totalItemsVolume / bin.volume * 100,
+          unusedVolumePercent: 100 - totalItemsVolume / bin.volume * 100,
+          usedWeight: totalItemsWeight
+        };
+
+        return [...agg, result];
+      },
+      []
+    );
+
+    return {
+      totals: {
+        usedbins: this.usedBins.length,
+        unusedVolumePercent: bins.reduce((agg, binStats) => agg + binStats.unusedVolumePercent, 0) / bins.length,
+        totalBinVolume: this.usedBins.reduce((agg, bin) => agg + bin.volume, 0),
+        totalWeightOfItems: bins.reduce((agg, binStats) => agg + binStats.usedWeight, 0)
+      },
+      bins
+    };
   }
 }
