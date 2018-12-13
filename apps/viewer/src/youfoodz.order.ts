@@ -11543,8 +11543,8 @@ function getDimensionsForSku(sku: string) {
   if (sku.indexOf('YF') === 0) {
     return {
       w: 100,
-      h: 150,
-      d: 50
+      h: 50,
+      d: 150
     };
   }
 
@@ -11552,17 +11552,17 @@ function getDimensionsForSku(sku: string) {
   if (sku.indexOf('ZYF40') !== -1) {
     return {
       w: 40,
-      h: 80,
-      d: 60
+      h: 60,
+      d: 80
     };
   }
 
   // juices
   if (sku.indexOf('ZYF4') !== -1) {
     return {
-      w: 60,
-      h: 120,
-      d: 60
+      w: 50,
+      h: 150,
+      d: 50
     };
   }
 
@@ -11613,12 +11613,15 @@ const items = orderJson.order.line_items.reduce(
   []
 );
 
-export const packer = new Packer({removeEmptyBins: true});
-packer.addBin(new Bin('Box Small', 100, 200, 75));
-packer.addBin(new Bin('Box Medium', 300, 600, 200));
-packer.addBin(new Bin('Box Large', 400, 600, 200));
+export const packer = new Packer({removeEmptyBins: true, optimiseBins: true, binsAreUnlimted: true});
+packer.addBin(new Bin('Box Small', 200, 100, 100));
+packer.addBin(new Bin('Box Medium', 250, 125, 150));
+packer.addBin(new Bin('Box Large', 350, 175, 200));
 
 items.forEach((item: Item) => {
   packer.addItem(item);
 });
+
+console.time('Packing');
 packer.pack();
+console.timeEnd('Packing');
