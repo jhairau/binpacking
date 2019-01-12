@@ -33,9 +33,9 @@ describe('Single Bin', () => {
     packer.sortItems();
 
     it('should sort items largest to smallest', () => {
-      expect(packer.items[ 0 ].name).toEqual('Item Large');
-      expect(packer.items[ 1 ].name).toEqual('Item Medium');
-      expect(packer.items[ 2 ].name).toEqual('Item Small');
+      expect(packer.items[0].name).toEqual('Item Large');
+      expect(packer.items[1].name).toEqual('Item Medium');
+      expect(packer.items[2].name).toEqual('Item Small');
     });
 
   });
@@ -57,21 +57,21 @@ describe('Single Bin', () => {
 
     it('should have 2 items in bin 1', () => {
       console.log(JSON.stringify(packer));
-      shouldHaveXItemsInBin(packer.usedBins[ 0 ], 2);
+      shouldHaveXItemsInBin(packer.usedBins[0], 2);
     });
 
     it('should be stacked in bin 1', () => {
-      const item1 = packer.usedBins[ 0 ].items[ 0 ];
-      const item2 = packer.usedBins[ 0 ].items[ 1 ];
+      const item1 = packer.usedBins[0].items[0];
+      const item2 = packer.usedBins[0].items[1];
       expect(item1.name).toEqual('Item 1');
-      expect(item1.position[ 2 ]).toEqual(0);
+      expect(item1.position[2]).toEqual(0);
 
       expect(item2.name).toEqual('Item 2');
-      expect(item2.position[ 2 ]).toEqual(25);
+      expect(item2.position[2]).toEqual(25);
     });
 
     it('should not have rotation on items', () => {
-      const items = packer.usedBins[ 0 ].items;
+      const items = packer.usedBins[0].items;
       items.forEach((item) => {
         expect(item.rotationType).toEqual(0);
       });
@@ -94,24 +94,24 @@ describe('Single Bin', () => {
     });
 
     it('should have 2 items in bin 1', () => {
-      shouldHaveXItemsInBin(packer.usedBins[ 0 ], 2);
+      shouldHaveXItemsInBin(packer.usedBins[0], 2);
     });
 
     it('should be end to end in bin 1', () => {
-      const item1 = packer.usedBins[ 0 ].items[ 0 ];
-      const item2 = packer.usedBins[ 0 ].items[ 1 ];
+      const item1 = packer.usedBins[0].items[0];
+      const item2 = packer.usedBins[0].items[1];
 
       expect(item1.name).toEqual('Item 1');
-      expect(item1.position[ 0 ]).toEqual(0);
-      expect(item1.position[ 1 ]).toEqual(0);
+      expect(item1.position[0]).toEqual(0);
+      expect(item1.position[1]).toEqual(0);
 
       expect(item2.name).toEqual('Item 2');
-      expect(item2.position[ 0 ]).toEqual(50);
-      expect(item2.position[ 1 ]).toEqual(0);
+      expect(item2.position[0]).toEqual(50);
+      expect(item2.position[1]).toEqual(0);
     });
 
     it('should not have rotation on items', () => {
-      const items = packer.usedBins[ 0 ].items;
+      const items = packer.usedBins[0].items;
       items.forEach((item) => {
         expect(item.rotationType).toEqual(0);
       });
@@ -127,7 +127,7 @@ describe('Single Bin', () => {
     packer.pack();
 
     it('should have 3 items in bin 1', () => {
-      shouldHaveXItemsInBin(packer.usedBins[ 0 ], 3);
+      shouldHaveXItemsInBin(packer.usedBins[0], 3);
     });
   });
 });
@@ -142,15 +142,15 @@ describe('Multi Bin', () => {
     packer.sortAvailableBins();
 
     it('should sort usedBins smallest to largest', () => {
-      expect(packer.availableBins[ 0 ].name).toEqual('Bin Small');
-      expect(packer.availableBins[ 1 ].name).toEqual('Bin Medium');
-      expect(packer.availableBins[ 2 ].name).toEqual('Bin Large');
+      expect(packer.availableBins[0].name).toEqual('Bin Small');
+      expect(packer.availableBins[1].name).toEqual('Bin Medium');
+      expect(packer.availableBins[2].name).toEqual('Bin Large');
     });
 
   });
 
   describe('2 usedBins no rotation', () => {
-    const packer = new Packer({removeEmptyBins: true});
+    const packer = new Packer({ binsAreUnlimited: true });
     packer.addBin(new Bin('Bin Small', 10, 10, 10));
     // packer.addBin(new Bin('Bin Small', 10, 10, 10));
     // packer.addBin(new Bin('Bin Small', 10, 10, 10));
@@ -169,16 +169,16 @@ describe('Multi Bin', () => {
     });
 
     it('should bin in 2 small usedBins', () => {
-      expect(packer.usedBins[ 0 ].name).toEqual('Bin Small');
-      expect(packer.usedBins[ 1 ].name).toEqual('Bin Small');
+      expect(packer.usedBins[0].name).toEqual('Bin Small');
+      expect(packer.usedBins[1].name).toEqual('Bin Small');
     });
 
     it('should have 1 items in bin 1', () => {
-      shouldHaveXItemsInBin(packer.usedBins[ 0 ], 1);
+      shouldHaveXItemsInBin(packer.usedBins[0], 1);
     });
 
     it('should have 2 items in bin 2', () => {
-      shouldHaveXItemsInBin(packer.usedBins[ 1 ], 2);
+      shouldHaveXItemsInBin(packer.usedBins[1], 2);
     });
 
   });
@@ -187,17 +187,17 @@ describe('Multi Bin', () => {
 describe('Rotation', () => {
 
   describe('Rotate NONE', () => {
-    const packer = new Packer({removeEmptyBins: true});
+    const packer = new Packer({ binsAreUnlimited: true });
     packer.addBin(new Bin('Bin Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Wide:', 100, 50, 50));
     packer.pack();
 
     it('should have rotationType of 0', () => {
-      expect(packer.usedBins[ 0 ].items[ 0 ].rotationType).toEqual(0);
+      expect(packer.usedBins[0].items[0].rotationType).toEqual(0);
     });
 
     it('should have Eurler [0,0,0]', () => {
-      expect(packer.usedBins[ 0 ].items[ 0 ].getEuler())
+      expect(packer.usedBins[0].items[0].getEuler())
         .toEqual({
           x: 0,
           y: 0,
@@ -207,17 +207,17 @@ describe('Rotation', () => {
   });
 
   describe('Rotate Z Axis', () => {
-    const packer = new Packer({removeEmptyBins: true});
+    const packer = new Packer({ binsAreUnlimited: true });
     packer.addBin(new Bin('Bin Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Tall:', 50, 100, 50));
     packer.pack();
 
     it('should have rotationType of 1', () => {
-      expect(packer.usedBins[ 0 ].items[ 0 ].rotationType).toEqual(1);
+      expect(packer.usedBins[0].items[0].rotationType).toEqual(1);
     });
 
     it('should have Eurler [0,0,1.57]', () => {
-      expect(packer.usedBins[ 0 ].items[ 0 ].getEuler())
+      expect(packer.usedBins[0].items[0].getEuler())
         .toEqual({
           x: 0,
           y: 0,
@@ -228,18 +228,18 @@ describe('Rotation', () => {
 
   // TODO: Fix
   describe('Rotate Y Axis', () => {
-    const packer = new Packer({removeEmptyBins: true});
+    const packer = new Packer({ binsAreUnlimited: true });
     packer.addBin(new Bin('Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Half of bin', 100, 25, 50));
     packer.addItem(new Item('Item Half of bin', 100, 25, 25));
     packer.pack();
 
     it('should have rotationType of 2', () => {
-      expect(packer.usedBins[ 0 ].items[ 0 ].rotationType).toEqual(0);
+      expect(packer.usedBins[0].items[0].rotationType).toEqual(0);
     });
 
     it('should have Eurler [0,0,0]', () => {
-      expect(packer.usedBins[ 0 ].items[ 0 ].getEuler())
+      expect(packer.usedBins[0].items[0].getEuler())
         .toEqual({
           x: 0,
           y: 0,
