@@ -1,6 +1,6 @@
 import {
   Item,
-  startPosition
+  StartPosition
 } from './item';
 import { Bin } from './bin';
 import {
@@ -9,6 +9,11 @@ import {
 } from './models';
 
 interface PackerOptions {
+
+  /**
+   * This might be a legacy feature
+   */
+  removeEmptyBins?: boolean;
 
   /**
    * By default the algorithm will try to pack the smallest fitting box available.
@@ -41,6 +46,7 @@ interface PackerOptions {
 }
 
 const defaultPackerOptions: PackerOptions = {
+  removeEmptyBins: false,
   optimiseBins: false,
   restrictRotation: false,
   binsAreUnlimited: true
@@ -59,7 +65,7 @@ export class Packer {
       return 0;
     }
     return a.volume > b.volume ? -1 : 1;
-  }
+  };
 
   constructor(options?: PackerOptions) {
     this.options = {
@@ -77,15 +83,15 @@ export class Packer {
   }
 
   findFittedBin(item: Item): Bin | null {
-    for (let i = 0; i < this.availableBins.length; i += i) {
-      const bin = this.availableBins[i];
+    for (let i = 0; i < this.availableBins.length; i++) {
+      const bin = this.availableBins[ i ];
 
       // Check if item can fit in bin
-      if (!bin.weighItem(item) || !bin.putItem(item, startPosition)) {
+      if (!bin.weighItem(item) || !bin.putItem(item, StartPosition)) {
         continue;
       }
 
-      if (bin.items.length === 1 && bin.items[0] === item) {
+      if (bin.items.length === 1 && bin.items[ 0 ] === item) {
         bin.items = [];
       }
 
@@ -96,8 +102,8 @@ export class Packer {
 
   getBiggerBinThan(bin: Bin): Bin | null {
     const volume = bin.volume;
-    for (let i = 0; i < this.availableBins.length; i += i) {
-      const bin2 = this.availableBins[i];
+    for (let i = 0; i < this.availableBins.length; i++) {
+      const bin2 = this.availableBins[ i ];
       if (bin2.volume > volume) {
         return bin2;
       }
@@ -109,7 +115,7 @@ export class Packer {
     if (this.items.length === 0) {
       return;
     }
-    this.unfitItems.push(this.items[0]);
+    this.unfitItems.push(this.items[ 0 ]);
     this.items.splice(0, 1);
   }
 
@@ -121,7 +127,7 @@ export class Packer {
   packToBin(bin: Bin, items: Item[]): Item[] {
     let bin2 = null;
     const unpacked = [];
-    const fit = bin.weighItem(items[0]) && bin.putItem(items[0], startPosition);
+    const fit = bin.weighItem(items[ 0 ]) && bin.putItem(items[ 0 ], StartPosition);
 
     if (!fit) {
       const bin2 = this.getBiggerBinThan(bin);
@@ -132,41 +138,41 @@ export class Packer {
     }
 
     // Pack unpacked items.
-    for (let i = 1; i < this.items.length; i += i) {
+    for (let i = 1; i < this.items.length; i++) {
       let fitted = false;
-      const unpackedItem: Item = this.items[i];
+      const unpackedItem: Item = this.items[ i ];
 
       if (bin.weighItem(unpackedItem)) {
         // Try available pivots in current bin that are not intersect with
         // existing items in current bin.
         lookup:
-          for (let dimensionIdx = 0; dimensionIdx < 3; dimensionIdx += dimensionIdx) { // dimension
-            for (let itemInBinIdx = 0; itemInBinIdx < bin.items.length; itemInBinIdx += itemInBinIdx) { // items loop
+          for (let dimensionIdx = 0; dimensionIdx < 3; dimensionIdx++) { // dimension
+            for (let itemInBinIdx = 0; itemInBinIdx < bin.items.length; itemInBinIdx++) { // items loop
               let pv: [ number, number, number ];
-              const packedItem: Item = bin.items[itemInBinIdx]; // item
+              const packedItem: Item = bin.items[ itemInBinIdx ]; // item
 
               // shuffle item along an axis
               switch (dimensionIdx) { // dimension
                 case DimensionsCartesian.x:
                   pv = [
-                    packedItem.position[DimensionsLength.width] + packedItem.width,
-                    packedItem.position[DimensionsLength.height],
-                    packedItem.position[DimensionsLength.depth]
+                    packedItem.position[ DimensionsLength.width ] + packedItem.width,
+                    packedItem.position[ DimensionsLength.height ],
+                    packedItem.position[ DimensionsLength.depth ]
                   ];
                   break;
                 case DimensionsCartesian.y:
                   pv = [
-                    packedItem.position[DimensionsLength.width],
-                    packedItem.position[DimensionsLength.height] + packedItem.height,
-                    packedItem.position[DimensionsLength.depth]
+                    packedItem.position[ DimensionsLength.width ],
+                    packedItem.position[ DimensionsLength.height ] + packedItem.height,
+                    packedItem.position[ DimensionsLength.depth ]
                   ];
                   break;
                 case DimensionsCartesian.z:
                 default:
                   pv = [
-                    packedItem.position[DimensionsLength.width],
-                    packedItem.position[DimensionsLength.height],
-                    packedItem.position[DimensionsLength.depth] + packedItem.depth
+                    packedItem.position[ DimensionsLength.width ],
+                    packedItem.position[ DimensionsLength.height ],
+                    packedItem.position[ DimensionsLength.depth ] + packedItem.depth
                   ];
                   break;
               }
@@ -186,7 +192,6 @@ export class Packer {
             bin2.items.push(unpackedItem);
             const left = this.packToBin(bin2, bin2.items);
             if (left.length === 0) {
-              // @ts-ignore
               bin = bin2; // interesting .....
               fitted = true;
               break;
@@ -229,10 +234,10 @@ export class Packer {
   findOptimumBin(): Bin | null {
     const itemsTotals = this.items.reduce(
       (agg, item: Item) => (
-      {
-        volume: agg.volume + item.volume,
-        weight: agg.weight + item.weight || 0
-      }
+        {
+          volume: agg.volume + item.volume,
+          weight: agg.weight + item.weight || 0
+        }
       ),
       {
         volume: 0,
@@ -243,8 +248,8 @@ export class Packer {
     const length = this.availableBins.length;
     let optimumBin: Bin | null = null;
 
-    for (let i = 0; i < length; i += i) {
-      const bin = this.availableBins[i];
+    for (let i = 0; i < length; i++) {
+      const bin = this.availableBins[ i ];
 
       if (
         bin.volume < itemsTotals.volume || // items have too much volume
@@ -278,9 +283,9 @@ export class Packer {
 
       if (this.options.optimiseBins) {
         const optimumBin = this.findOptimumBin();
-        availableBin = optimumBin ? optimumBin : this.availableBins[this.availableBins.length - 1];
+        availableBin = optimumBin ? optimumBin : this.availableBins[ this.availableBins.length - 1 ];
       } else {
-        availableBin = this.findFittedBin(this.items[0]);
+        availableBin = this.findFittedBin(this.items[ 0 ]);
       }
 
       // Biggest item cannot fit in biggest availableBin, exit
@@ -305,6 +310,10 @@ export class Packer {
       this.usedBins = this.availableBins;
     }
 
+    // if (this.options.removeEmptyBins) {
+    //   this.availableBins = this.availableBins.filter((bin: Bin) => bin.items.length !== 0);
+    // }
+
   }
 
   stats() {
@@ -328,13 +337,13 @@ export class Packer {
     );
 
     return {
-      bins,
       totals: {
         usedbins: this.usedBins.length,
         unusedVolumePercent: bins.reduce((agg, binStats) => agg + binStats.unusedVolumePercent, 0) / bins.length,
         totalBinVolume: this.usedBins.reduce((agg, bin) => agg + bin.volume, 0),
         totalWeightOfItems: bins.reduce((agg, binStats) => agg + binStats.usedWeight, 0)
-      }
+      },
+      bins
     };
   }
 }

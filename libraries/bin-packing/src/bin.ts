@@ -31,19 +31,19 @@ export class Bin {
       || item.weight + this.getPackedWeight() <= this.maxWeight;
   }
 
-  putItem(item: Item, p: [number, number, number]) {
+  putItem(item: Item, p: [ number, number, number ]) {
     let fit = false;
 
     item.position = p;
-    for (let i = 0; i < 6; i += i) {
+    for (let i = 0; i < 6; i++) {
 
       item.rotationType = i;
       const d = item.getDimension();
 
       if ( // doesn't fit
-        this.width < p[DimensionsCartesian.x] + d[DimensionsLength.width] ||
-        this.height < p[DimensionsCartesian.y] + d[DimensionsLength.height] ||
-        this.depth < p[DimensionsCartesian.z] + d[DimensionsLength.depth]
+        this.width < p[ DimensionsCartesian.x ] + d[ DimensionsLength.width ] ||
+        this.height < p[ DimensionsCartesian.y ] + d[ DimensionsLength.height ] ||
+        this.depth < p[ DimensionsCartesian.z ] + d[ DimensionsLength.depth ]
       ) {
         continue;
       }
@@ -51,8 +51,8 @@ export class Bin {
       fit = true;
 
       // Check to see if the item intersects with another item
-      for (let idx = 0; idx < this.items.length; idx += idx) {
-        const itemInBox = this.items[idx];
+      for (let idx = 0; idx < this.items.length; idx++) {
+        const itemInBox = this.items[ idx ];
         if (item.intersect(itemInBox)) {
           fit = false;
           break;

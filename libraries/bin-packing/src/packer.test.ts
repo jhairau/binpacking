@@ -1,6 +1,6 @@
-import { Bin } from './bin';
-import { Item } from './item';
-import { Packer } from './packer';
+import {Bin} from './bin';
+import {Item} from './item';
+import {Packer} from './packer';
 
 function shouldHaveXBins(packer: Packer, x: number) {
   expect(packer.usedBins).toHaveLength(x);
@@ -150,7 +150,7 @@ describe('Multi Bin', () => {
   });
 
   describe('2 usedBins no rotation', () => {
-    const packer = new Packer({ binsAreUnlimited: true });
+    const packer = new Packer({binsAreUnlimited: true});
     packer.addBin(new Bin('Bin Small', 10, 10, 10));
     // packer.addBin(new Bin('Bin Small', 10, 10, 10));
     // packer.addBin(new Bin('Bin Small', 10, 10, 10));
@@ -187,7 +187,7 @@ describe('Multi Bin', () => {
 describe('Rotation', () => {
 
   describe('Rotate NONE', () => {
-    const packer = new Packer({ binsAreUnlimited: true });
+    const packer = new Packer({binsAreUnlimited: true});
     packer.addBin(new Bin('Bin Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Wide:', 100, 50, 50));
     packer.pack();
@@ -196,18 +196,18 @@ describe('Rotation', () => {
       expect(packer.usedBins[0].items[0].rotationType).toEqual(0);
     });
 
-    it('should have Eurler [0,0,0]', () => {
-      expect(packer.usedBins[0].items[0].getDimension())
-        .toEqual({
-          x: 0,
-          y: 0,
-          z: 0
-        });
+    it('should have position [0,0,0]', () => {
+      expect(packer.usedBins[0].items[0].position)
+        .toEqual([
+          0,
+          0,
+          0
+        ]);
     });
   });
 
   describe('Rotate Z Axis', () => {
-    const packer = new Packer({ binsAreUnlimited: true });
+    const packer = new Packer({binsAreUnlimited: true});
     packer.addBin(new Bin('Bin Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Tall:', 50, 100, 50));
     packer.pack();
@@ -216,19 +216,19 @@ describe('Rotation', () => {
       expect(packer.usedBins[0].items[0].rotationType).toEqual(1);
     });
 
-    it('should have Eurler [0,0,1.57]', () => {
+    it('should have Dimension [100, 50 , 50]', () => {
       expect(packer.usedBins[0].items[0].getDimension())
-        .toEqual({
-          x: 0,
-          y: 0,
-          z: 1.57
-        });
+        .toEqual([
+          100,
+          50,
+          50
+        ]);
     });
   });
 
   // TODO: Fix
   describe('Rotate Y Axis', () => {
-    const packer = new Packer({ binsAreUnlimited: true });
+    const packer = new Packer({binsAreUnlimited: true});
     packer.addBin(new Bin('Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Half of bin', 100, 25, 50));
     packer.addItem(new Item('Item Half of bin', 100, 25, 25));
@@ -238,13 +238,13 @@ describe('Rotation', () => {
       expect(packer.usedBins[0].items[0].rotationType).toEqual(0);
     });
 
-    it('should have Eurler [0,0,0]', () => {
+    it('should have Dimension [100,25,50]', () => {
       expect(packer.usedBins[0].items[0].getDimension())
-        .toEqual({
-          x: 0,
-          y: 0,
-          z: 0
-        });
+        .toEqual([
+          100,
+          25,
+          50
+        ]);
     });
   });
 });
