@@ -197,7 +197,7 @@ describe('Rotation', () => {
     });
 
     it('should have Eurler [0,0,0]', () => {
-      expect(packer.usedBins[0].items[0].getEuler())
+      expect(packer.usedBins[0].items[0].getDimension())
         .toEqual({
           x: 0,
           y: 0,
@@ -217,7 +217,7 @@ describe('Rotation', () => {
     });
 
     it('should have Eurler [0,0,1.57]', () => {
-      expect(packer.usedBins[0].items[0].getEuler())
+      expect(packer.usedBins[0].items[0].getDimension())
         .toEqual({
           x: 0,
           y: 0,
@@ -239,7 +239,7 @@ describe('Rotation', () => {
     });
 
     it('should have Eurler [0,0,0]', () => {
-      expect(packer.usedBins[0].items[0].getEuler())
+      expect(packer.usedBins[0].items[0].getDimension())
         .toEqual({
           x: 0,
           y: 0,
