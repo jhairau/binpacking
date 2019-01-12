@@ -41,9 +41,9 @@ export class Bin {
       const d = item.getDimension();
 
       if ( // doesn't fit
-        this.width < p[ DimensionsCartesian.x ] + d[ DimensionsLength.width ] ||
-        this.height < p[ DimensionsCartesian.y ] + d[ DimensionsLength.height ] ||
-        this.depth < p[ DimensionsCartesian.z ] + d[ DimensionsLength.depth ]
+        this.width < p[DimensionsCartesian.x] + d[DimensionsLength.width] ||
+        this.height < p[DimensionsCartesian.y] + d[DimensionsLength.height] ||
+        this.depth < p[DimensionsCartesian.z] + d[DimensionsLength.depth]
       ) {
         continue;
       }
@@ -52,7 +52,7 @@ export class Bin {
 
       // Check to see if the item intersects with another item
       for (let idx = 0; idx < this.items.length; idx++) {
-        const itemInBox = this.items[ idx ];
+        const itemInBox = this.items[idx];
         if (item.intersect(itemInBox)) {
           fit = false;
           break;

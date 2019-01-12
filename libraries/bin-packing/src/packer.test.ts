@@ -1,6 +1,6 @@
-import {Bin} from './bin';
-import {Item} from './item';
-import {Packer} from './packer';
+import { Bin } from './bin';
+import { Item } from './item';
+import { Packer } from './packer';
 
 function shouldHaveXBins(packer: Packer, x: number) {
   expect(packer.usedBins).toHaveLength(x);
@@ -150,7 +150,7 @@ describe('Multi Bin', () => {
   });
 
   describe('2 usedBins no rotation', () => {
-    const packer = new Packer({binsAreUnlimited: true});
+    const packer = new Packer({ binsAreUnlimited: true });
     packer.addBin(new Bin('Bin Small', 10, 10, 10));
     // packer.addBin(new Bin('Bin Small', 10, 10, 10));
     // packer.addBin(new Bin('Bin Small', 10, 10, 10));
@@ -187,7 +187,7 @@ describe('Multi Bin', () => {
 describe('Rotation', () => {
 
   describe('Rotate NONE', () => {
-    const packer = new Packer({binsAreUnlimited: true});
+    const packer = new Packer({ binsAreUnlimited: true });
     packer.addBin(new Bin('Bin Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Wide:', 100, 50, 50));
     packer.pack();
@@ -207,7 +207,7 @@ describe('Rotation', () => {
   });
 
   describe('Rotate Z Axis', () => {
-    const packer = new Packer({binsAreUnlimited: true});
+    const packer = new Packer({ binsAreUnlimited: true });
     packer.addBin(new Bin('Bin Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Tall:', 50, 100, 50));
     packer.pack();
@@ -228,7 +228,7 @@ describe('Rotation', () => {
 
   // TODO: Fix
   describe('Rotate Y Axis', () => {
-    const packer = new Packer({binsAreUnlimited: true});
+    const packer = new Packer({ binsAreUnlimited: true });
     packer.addBin(new Bin('Rectangle', 100, 50, 50));
     packer.addItem(new Item('Item Half of bin', 100, 25, 50));
     packer.addItem(new Item('Item Half of bin', 100, 25, 25));

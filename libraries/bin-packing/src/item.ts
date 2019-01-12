@@ -23,12 +23,12 @@ export interface Euler {
 }
 
 export const RotationTypeStrings = {
-  [ RotationType_WHD ]: 'RotationType_WHD (w,h,d)',
-  [ RotationType_HWD ]: 'RotationType_HWD (h,w,d)',
-  [ RotationType_HDW ]: 'RotationType_HDW (h,d,w)',
-  [ RotationType_DHW ]: 'RotationType_DHW (d,h,w)',
-  [ RotationType_DWH ]: 'RotationType_DWH (d,w,h)',
-  [ RotationType_WDH ]: 'RotationType_WDH (w,d,h)'
+  [RotationType_WHD]: 'RotationType_WHD (w,h,d)',
+  [RotationType_HWD]: 'RotationType_HWD (h,w,d)',
+  [RotationType_HDW]: 'RotationType_HDW (h,d,w)',
+  [RotationType_DHW]: 'RotationType_DHW (d,h,w)',
+  [RotationType_DWH]: 'RotationType_DWH (d,w,h)',
+  [RotationType_WDH]: 'RotationType_WDH (w,d,h)'
 };
 
 export class Item {
@@ -53,7 +53,7 @@ export class Item {
 
   getRotationTypeString(): string {
     // @ts-ignore
-    return RotationTypeStrings[ this.rotationType ];
+    return RotationTypeStrings[this.rotationType];
   }
 
   /**
@@ -117,22 +117,22 @@ export const rectIntersect = (i1: Item, i2: Item, x: number, y: number) => {
   const d1 = i1.getDimension();
   const d2 = i2.getDimension();
 
-  const cx1 = i1.position[ x ] + d1[ x ] / 2;
-  const cy1 = i1.position[ y ] + d1[ y ] / 2;
-  const cx2 = i2.position[ x ] + d2[ x ] / 2;
-  const cy2 = i2.position[ y ] + d2[ y ] / 2;
+  const cx1 = i1.position[x] + d1[x] / 2;
+  const cy1 = i1.position[y] + d1[y] / 2;
+  const cx2 = i2.position[x] + d2[x] / 2;
+  const cy2 = i2.position[y] + d2[y] / 2;
 
   const ix = Math.max(cx1, cx2) - Math.min(cx1, cx2);
   const iy = Math.max(cy1, cy2) - Math.min(cy1, cy2);
 
   return ix <
     (
-      d1[ x ] + d2[ x ]
+      d1[x] + d2[x]
     ) /
     2 &&
     iy <
     (
-      d1[ y ] + d2[ y ]
+      d1[y] + d2[y]
     ) /
     2;
 };
