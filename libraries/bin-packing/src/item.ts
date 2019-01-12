@@ -39,8 +39,6 @@ export class Item {
     0,
     0
   ]; // x, y, z
-  // @ts-ignore
-  euler: Euler;
 
   constructor(
     public name: string,
@@ -59,52 +57,8 @@ export class Item {
   }
 
   /**
-   * Get Euler
-   * This makes it easier for integrating into THREE.js
-   * @link https://en.wikipedia.org/wiki/Euler_angles
+   * XYZ Dimensions of the item after rotation is applied
    */
-  getEuler(): Euler {
-    switch (this.rotationType) {
-      default:
-      case RotationType_WHD:
-        return {
-          x: 0,
-          y: 0,
-          z: 0
-        };
-      case RotationType_HWD:
-        return {
-          x: 0,
-          y: 0,
-          z: 1.57
-        };
-      case RotationType_HDW:
-        return {
-          x: 0,
-          y: 1.57,
-          z: 0
-        };
-      case RotationType_DHW:
-        return {
-          x: 1.57,
-          y: 1.57,
-          z: 0
-        };
-      case RotationType_DWH:
-        return {
-          x: 1.57,
-          y: 0,
-          z: 0
-        };
-      case RotationType_WDH:
-        return {
-          x: 1.57,
-          y: 0,
-          z: 1.57
-        };
-    }
-  }
-
   getDimension(): [ number, number, number ] {
     switch (this.rotationType) {
       case RotationType_WHD:
@@ -160,7 +114,6 @@ export class Item {
 }
 
 export const rectIntersect = (i1: Item, i2: Item, x: number, y: number) => {
-
   const d1 = i1.getDimension();
   const d2 = i2.getDimension();
 
