@@ -35,7 +35,7 @@ export class Bin {
     let fit = false;
 
     item.position = p;
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i += 1) {
 
       item.rotationType = i;
       const d = item.getDimension();
@@ -51,7 +51,7 @@ export class Bin {
       fit = true;
 
       // Check to see if the item intersects with another item
-      for (let idx = 0; idx < this.items.length; idx++) {
+      for (let idx = 0; idx < this.items.length; idx += 1) {
         const itemInBox = this.items[idx];
         if (item.intersect(itemInBox)) {
           fit = false;

@@ -83,7 +83,7 @@ export class Packer {
   }
 
   findFittedBin(item: Item): Bin | null {
-    for (let i = 0; i < this.availableBins.length; i++) {
+    for (let i = 0; i < this.availableBins.length; i += 1) {
       const bin = this.availableBins[i];
 
       // Check if item can fit in bin
@@ -102,7 +102,7 @@ export class Packer {
 
   getBiggerBinThan(bin: Bin): Bin | null {
     const volume = bin.volume;
-    for (let i = 0; i < this.availableBins.length; i++) {
+    for (let i = 0; i < this.availableBins.length; i += 1) {
       const bin2 = this.availableBins[i];
       if (bin2.volume > volume) {
         return bin2;
@@ -138,7 +138,7 @@ export class Packer {
     }
 
     // Pack unpacked items.
-    for (let i = 1; i < this.items.length; i++) {
+    for (let i = 1; i < this.items.length; i += 1) {
       let fitted = false;
       const unpackedItem: Item = this.items[i];
 
@@ -146,8 +146,8 @@ export class Packer {
         // Try available pivots in current bin that are not intersect with
         // existing items in current bin.
         lookup:
-          for (let dimensionIdx = 0; dimensionIdx < 3; dimensionIdx++) { // dimension
-            for (let itemInBinIdx = 0; itemInBinIdx < bin.items.length; itemInBinIdx++) { // items loop
+          for (let dimensionIdx = 0; dimensionIdx < 3; dimensionIdx += 1) { // dimension
+            for (let itemInBinIdx = 0; itemInBinIdx < bin.items.length; itemInBinIdx += 1) { // items loop
               let pv: [ number, number, number ];
               const packedItem: Item = bin.items[itemInBinIdx]; // item
 
@@ -248,7 +248,7 @@ export class Packer {
     const length = this.availableBins.length;
     let optimumBin: Bin | null = null;
 
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i += 1) {
       const bin = this.availableBins[i];
 
       if (

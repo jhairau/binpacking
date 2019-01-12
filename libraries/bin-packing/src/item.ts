@@ -15,13 +15,6 @@ export const StartPosition: [ number, number, number ] = [
   0
 ];
 
-export interface Euler {
-  x: number;
-  y: number;
-  z: number;
-  order?: string;
-}
-
 export const RotationTypeStrings = {
   [RotationType_WHD]: 'RotationType_WHD (w,h,d)',
   [RotationType_HWD]: 'RotationType_HWD (h,w,d)',
