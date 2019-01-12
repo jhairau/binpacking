@@ -1,15 +1,15 @@
-export const RotationType_WHD = 0;
-export const RotationType_HWD = 1;
-export const RotationType_HDW = 2;
-export const RotationType_DHW = 3;
-export const RotationType_DWH = 4;
-export const RotationType_WDH = 5;
+export const rotationTypeWHD = 0;
+export const rotationTypeHWD = 1;
+export const rotationTypeHDW = 2;
+export const rotationTypeDHW = 3;
+export const rotationTypeDWH = 4;
+export const rotationTypeWDH = 5;
 
-export const WidthAxis = 0;
-export const HeightAxis = 1;
-export const DepthAxis = 2;
+export const widthAxis = 0;
+export const heightAxis = 1;
+export const depthAxis = 2;
 
-export const StartPosition: [ number, number, number ] = [
+export const startPosition: [ number, number, number ] = [
   0,
   0,
   0
@@ -22,17 +22,17 @@ export interface Euler {
   order?: string;
 }
 
-export const RotationTypeStrings = {
-  [ RotationType_WHD ]: 'RotationType_WHD (w,h,d)',
-  [ RotationType_HWD ]: 'RotationType_HWD (h,w,d)',
-  [ RotationType_HDW ]: 'RotationType_HDW (h,d,w)',
-  [ RotationType_DHW ]: 'RotationType_DHW (d,h,w)',
-  [ RotationType_DWH ]: 'RotationType_DWH (d,w,h)',
-  [ RotationType_WDH ]: 'RotationType_WDH (w,d,h)'
+export const rotationTypeStrings = {
+  [rotationTypeWHD]: 'rotationTypeWHD (w,h,d)',
+  [rotationTypeHWD]: 'rotationTypeHWD (h,w,d)',
+  [rotationTypeHDW]: 'rotationTypeHDW (h,d,w)',
+  [rotationTypeDHW]: 'rotationTypeDHW (d,h,w)',
+  [rotationTypeDWH]: 'rotationTypeDWH (d,w,h)',
+  [rotationTypeWDH]: 'rotationTypeWDH (w,d,h)'
 };
 
 export class Item {
-  rotationType: number = RotationType_WHD;
+  rotationType: number = rotationTypeWHD;
   volume: number = 0;
   position: [ number, number, number ] = [
     0,
@@ -53,91 +53,39 @@ export class Item {
     this.volume = width * height * depth;
   }
 
-  getRotationTypeString(): string {
-    // @ts-ignore
-    return RotationTypeStrings[ this.rotationType ];
-  }
-
-  /**
-   * Get Euler
-   * This makes it easier for integrating into THREE.js
-   * @link https://en.wikipedia.org/wiki/Euler_angles
-   */
-  getEuler(): Euler {
-    switch (this.rotationType) {
-      default:
-      case RotationType_WHD:
-        return {
-          x: 0,
-          y: 0,
-          z: 0
-        };
-      case RotationType_HWD:
-        return {
-          x: 0,
-          y: 0,
-          z: 1.57
-        };
-      case RotationType_HDW:
-        return {
-          x: 0,
-          y: 1.57,
-          z: 0
-        };
-      case RotationType_DHW:
-        return {
-          x: 1.57,
-          y: 1.57,
-          z: 0
-        };
-      case RotationType_DWH:
-        return {
-          x: 1.57,
-          y: 0,
-          z: 0
-        };
-      case RotationType_WDH:
-        return {
-          x: 1.57,
-          y: 0,
-          z: 1.57
-        };
-    }
-  }
-
   getDimension(): [ number, number, number ] {
     switch (this.rotationType) {
-      case RotationType_WHD:
+      case rotationTypeWHD:
         return [
           this.width,
           this.height,
           this.depth
         ];
-      case RotationType_HWD:
+      case rotationTypeHWD:
         return [
           this.height,
           this.width,
           this.depth
         ];
-      case RotationType_HDW:
+      case rotationTypeHDW:
         return [
           this.height,
           this.depth,
           this.width
         ];
-      case RotationType_DHW:
+      case rotationTypeDHW:
         return [
           this.depth,
           this.height,
           this.width
         ];
-      case RotationType_DWH:
+      case rotationTypeDWH:
         return [
           this.depth,
           this.width,
           this.height
         ];
-      case RotationType_WDH:
+      case rotationTypeWDH:
         return [
           this.width,
           this.depth,
@@ -153,33 +101,32 @@ export class Item {
   }
 
   intersect(i2: Item) {
-    return rectIntersect(this, i2, WidthAxis, HeightAxis) &&
-      rectIntersect(this, i2, HeightAxis, DepthAxis) &&
-      rectIntersect(this, i2, WidthAxis, DepthAxis);
+    return rectIntersect(this, i2, widthAxis, heightAxis) &&
+      rectIntersect(this, i2, heightAxis, depthAxis) &&
+      rectIntersect(this, i2, widthAxis, depthAxis);
   }
 }
 
-export const rectIntersect = (i1: Item, i2: Item, x: number, y: number) => {
+/**
+ * Returns true if the 2 items (cuboids) intersect each other at the given coordinates
+ * @param itemA
+ * @param itemB
+ * @param x
+ * @param y
+ */
+export const rectIntersect = (itemA: Item, itemB: Item, x: number, y: number): boolean => {
 
-  const d1 = i1.getDimension();
-  const d2 = i2.getDimension();
+  const itemADimensions = itemA.getDimension();
+  const itemBDimensions = itemB.getDimension();
 
-  const cx1 = i1.position[ x ] + d1[ x ] / 2;
-  const cy1 = i1.position[ y ] + d1[ y ] / 2;
-  const cx2 = i2.position[ x ] + d2[ x ] / 2;
-  const cy2 = i2.position[ y ] + d2[ y ] / 2;
+  const cx1 = itemA.position[x] + itemADimensions[x] / 2;
+  const cy1 = itemA.position[y] + itemADimensions[y] / 2;
+  const cx2 = itemB.position[x] + itemBDimensions[x] / 2;
+  const cy2 = itemB.position[y] + itemBDimensions[y] / 2;
 
   const ix = Math.max(cx1, cx2) - Math.min(cx1, cx2);
   const iy = Math.max(cy1, cy2) - Math.min(cy1, cy2);
 
-  return ix <
-    (
-      d1[ x ] + d2[ x ]
-    ) /
-    2 &&
-    iy <
-    (
-      d1[ y ] + d2[ y ]
-    ) /
-    2;
+  return ix < (itemADimensions[x] + itemBDimensions[x]) / 2 &&
+    iy < (itemADimensions[y] + itemBDimensions[y]) / 2;
 };
