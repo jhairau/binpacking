@@ -1,6 +1,6 @@
 import {
   Item,
-  StartPosition
+  startPosition
 } from './item';
 import { Bin } from './bin';
 import {
@@ -87,7 +87,7 @@ export class Packer {
       const bin = this.availableBins[i];
 
       // Check if item can fit in bin
-      if (!bin.weighItem(item) || !bin.putItem(item, StartPosition)) {
+      if (!bin.weighItem(item) || !bin.putItem(item, startPosition)) {
         continue;
       }
 
@@ -127,7 +127,7 @@ export class Packer {
   packToBin(bin: Bin, items: Item[]): Item[] {
     let bin2 = null;
     const unpacked = [];
-    const fit = bin.weighItem(items[0]) && bin.putItem(items[0], StartPosition);
+    const fit = bin.weighItem(items[0]) && bin.putItem(items[0], startPosition);
 
     if (!fit) {
       const bin2 = this.getBiggerBinThan(bin);
@@ -192,7 +192,7 @@ export class Packer {
             bin2.items.push(unpackedItem);
             const left = this.packToBin(bin2, bin2.items);
             if (left.length === 0) {
-              bin = bin2; // interesting .....
+              // bin = bin2; // interesting .....
               fitted = true;
               break;
             }
@@ -337,13 +337,13 @@ export class Packer {
     );
 
     return {
+      bins,
       totals: {
         usedbins: this.usedBins.length,
         unusedVolumePercent: bins.reduce((agg, binStats) => agg + binStats.unusedVolumePercent, 0) / bins.length,
         totalBinVolume: this.usedBins.reduce((agg, bin) => agg + bin.volume, 0),
         totalWeightOfItems: bins.reduce((agg, binStats) => agg + binStats.usedWeight, 0)
-      },
-      bins
+      }
     };
   }
 }

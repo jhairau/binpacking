@@ -1,31 +1,31 @@
-export const RotationType_WHD = 0;
-export const RotationType_HWD = 1;
-export const RotationType_HDW = 2;
-export const RotationType_DHW = 3;
-export const RotationType_DWH = 4;
-export const RotationType_WDH = 5;
+export const rotationTypeWHD = 0;
+export const rotationTypeHWD = 1;
+export const rotationTypeHDW = 2;
+export const rotationTypeDHW = 3;
+export const rotationTypeDWH = 4;
+export const rotationTypeWDH = 5;
 
-export const WidthAxis = 0;
-export const HeightAxis = 1;
-export const DepthAxis = 2;
+export const widthAxis = 0;
+export const heightAxis = 1;
+export const depthAxis = 2;
 
-export const StartPosition: [ number, number, number ] = [
+export const startPosition: [ number, number, number ] = [
   0,
   0,
   0
 ];
 
-export const RotationTypeStrings = {
-  [RotationType_WHD]: 'RotationType_WHD (w,h,d)',
-  [RotationType_HWD]: 'RotationType_HWD (h,w,d)',
-  [RotationType_HDW]: 'RotationType_HDW (h,d,w)',
-  [RotationType_DHW]: 'RotationType_DHW (d,h,w)',
-  [RotationType_DWH]: 'RotationType_DWH (d,w,h)',
-  [RotationType_WDH]: 'RotationType_WDH (w,d,h)'
+export const rotationTypeStrings = {
+  [rotationTypeWHD]: 'rotationTypeWHD (w,h,d)',
+  [rotationTypeHWD]: 'rotationTypeHWD (h,w,d)',
+  [rotationTypeHDW]: 'rotationTypeHDW (h,d,w)',
+  [rotationTypeDHW]: 'rotationTypeDHW (d,h,w)',
+  [rotationTypeDWH]: 'rotationTypeDWH (d,w,h)',
+  [rotationTypeWDH]: 'rotationTypeWDH (w,d,h)'
 };
 
 export class Item {
-  rotationType: number = RotationType_WHD;
+  rotationType: number = rotationTypeWHD;
   volume: number = 0;
   position: [ number, number, number ] = [
     0,
@@ -46,7 +46,7 @@ export class Item {
 
   getRotationTypeString(): string {
     // @ts-ignore
-    return RotationTypeStrings[this.rotationType];
+    return rotationTypeStrings[this.rotationType];
   }
 
   /**
@@ -54,37 +54,37 @@ export class Item {
    */
   getDimension(): [ number, number, number ] {
     switch (this.rotationType) {
-      case RotationType_WHD:
+      case rotationTypeWHD:
         return [
           this.width,
           this.height,
           this.depth
         ];
-      case RotationType_HWD:
+      case rotationTypeHWD:
         return [
           this.height,
           this.width,
           this.depth
         ];
-      case RotationType_HDW:
+      case rotationTypeHDW:
         return [
           this.height,
           this.depth,
           this.width
         ];
-      case RotationType_DHW:
+      case rotationTypeDHW:
         return [
           this.depth,
           this.height,
           this.width
         ];
-      case RotationType_DWH:
+      case rotationTypeDWH:
         return [
           this.depth,
           this.width,
           this.height
         ];
-      case RotationType_WDH:
+      case rotationTypeWDH:
         return [
           this.width,
           this.depth,
@@ -100,9 +100,9 @@ export class Item {
   }
 
   intersect(i2: Item) {
-    return rectIntersect(this, i2, WidthAxis, HeightAxis) &&
-      rectIntersect(this, i2, HeightAxis, DepthAxis) &&
-      rectIntersect(this, i2, WidthAxis, DepthAxis);
+    return rectIntersect(this, i2, widthAxis, heightAxis) &&
+      rectIntersect(this, i2, heightAxis, depthAxis) &&
+      rectIntersect(this, i2, widthAxis, depthAxis);
   }
 }
 
