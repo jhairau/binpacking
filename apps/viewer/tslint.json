@@ -1,7 +1,7 @@
 // tslint 5.8.0
 // tslint-react 3.4.0
 {
-  "extends": "tslint-config-airbnb",
+//  "extends": "tslint-config-airbnb",
   "lintOptions": {
     "typeCheck": true
   },
