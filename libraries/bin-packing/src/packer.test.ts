@@ -56,7 +56,6 @@ describe('Single Bin', () => {
     });
 
     it('should have 2 items in bin 1', () => {
-      console.log(JSON.stringify(packer));
       shouldHaveXItemsInBin(packer.usedBins[0], 2);
     });
 

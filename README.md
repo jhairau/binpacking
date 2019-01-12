@@ -1,4 +1,5 @@
 # Bin Packing Mono Repo
+[![Build Status](https://travis-ci.org/jhairau/binpacking.svg?branch=master)](https://travis-ci.org/jhairau/binpacking)
 
 ## Installation
 This mono repo uses [Microsoft Rush](https://rushjs.io/)

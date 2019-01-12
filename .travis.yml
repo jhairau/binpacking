@@ -14,8 +14,12 @@ script:
   - echo -en 'travis_fold:end:check\\r'
 
   - echo 'Installing...' && echo -en 'travis_fold:start:install\\r'
-  - node common/scripts/install-run-rush.js install
+  - cd libraries/bin-packing/ && npm run test
   - echo -en 'travis_fold:end:install\\r'
+
+  - echo 'Testing...' && echo -en 'travis_fold:start:test\\r'
+  - cd node common/scripts/install-run-rush.js rebuild --verbose
+  - echo -en 'travis_fold:end:test\\r'
 
   - echo 'Building...' && echo -en 'travis_fold:start:build\\r'
   - node common/scripts/install-run-rush.js rebuild --verbose
